@@ -621,8 +621,8 @@ class DataDonationProcessor:
     def prompt_file(self):
         description = props.Translatable(
             {
-                "en": f"Please follow the download instructions and choose the file that you stored on your device. Click “Skip” at the right bottom, if you do not have a {self.platform} file. ",
-                "nl": f"Volg de download instructies en kies het bestand dat u opgeslagen heeft op uw apparaat. Als u geen {self.platform} bestand heeft klik dan op “Overslaan” rechts onder.",
+                "en": f"Click 'Choose file' to choose the file that you received from TikTok. If you click 'Continue', the data that is required for research is extracted from your file. This may take a while, thank you for your patience.",
+                "nl": f"Klik op ‘Kies bestand’ om het bestand dat u ontvangen hebt van TikTok te kiezen. Als u op 'Verder' klikt worden de gegevens die nodig zijn voor het onderzoek uit uw bestand gehaald. Dit kan soms even duren. Een moment geduld a.u.b.",
             }
         )
         prompt_file = props.PropsUIPromptFileInput(description, self.mime_types)

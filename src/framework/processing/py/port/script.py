@@ -184,12 +184,12 @@ def count_items(zipfile, pattern, key):
 
 
 def count_posts(zipfile):
-    return sum(len(data) for data in glob_json(zipfile, "content/posts_*.json"))
+    return sum(len(data) for data in glob_json(zipfile, "*/content/posts_*.json"))
 
 
 def count_messages(zipfile):
     counts = {"sent": 0, "received": 0}
-    for data in glob_json(zipfile, "messages/inbox/**/message_*.json"):
+    for data in glob_json(zipfile, "*/messages/inbox/**/message_*.json"):
         donating_user = get_donating_user(data)
         for message in data["messages"]:
             key = "sent" if message["sender_name"] == donating_user else "received"
@@ -218,32 +218,34 @@ def extract_summary_data(zipfile):
         ],
         "Number": [
             count_items(
-                zipfile, "followers_and_following/followers_*.json", "string_list_data"
+                zipfile,
+                "*/followers_and_following/followers_*.json",
+                "string_list_data",
             ),
             count_items(
                 zipfile,
-                "followers_and_following/following.json",
+                "*/followers_and_following/following.json",
                 "relationships_following",
             ),
             count_posts(zipfile),
             count_items(
-                zipfile, "comments/post_comments.json", "comments_media_comments"
+                zipfile, "*/comments/post_comments.json", "comments_media_comments"
             ),
             count_items(
                 zipfile,
-                "ads_and_topics/videos_watched.json",
+                "*/ads_and_topics/videos_watched.json",
                 "impressions_history_videos_watched",
             ),
             count_items(
                 zipfile,
-                "ads_and_topics/posts_viewed.json",
+                "*/ads_and_topics/posts_viewed.json",
                 "impressions_history_posts_seen",
             ),
             message_counts["sent"],
             message_counts["received"],
             count_items(
                 zipfile,
-                "ads_and_topics/ads_viewed.json",
+                "*/ads_and_topics/ads_viewed.json",
                 "impressions_history_ads_seen",
             ),
         ],
@@ -267,7 +269,7 @@ def extract_direct_message_activity(zipfile):
     person_ids = defaultdict(lambda: next(counter))
     sender_ids = []
     timestamps = []
-    for data in glob_json(zipfile, "messages/inbox/**/message_*.json"):
+    for data in glob_json(zipfile, "*/messages/inbox/**/message_*.json"):
         # Ensure the donating user is the first to get an ID
         donating_user = get_donating_user(data)
         person_ids[donating_user]
@@ -332,7 +334,7 @@ def extract_direct_message_activity(zipfile):
 ## REMOVED ON REQUEST BY CAMBRIDGE (see notion)
 def extract_comment_activity(zipfile):
     timestamps = []
-    for data in glob_json(zipfile, "comments/post_comments.json"):
+    for data in glob_json(zipfile, "*/comments/post_comments.json"):
         for item in data["comments_media_comments"]:
             timestamps.append(
                 parse_datetime(item["string_map_data"]["Time"]["timestamp"])
@@ -372,7 +374,7 @@ def extract_comment_activity(zipfile):
 # CAMBRIDGE ASKED TO REMOVE THE 'POSTS LIKED' (ON NOTION)
 def extract_posts_liked(zipfile):
     timestamps = []
-    for data in glob_json(zipfile, "likes/liked_posts.json"):
+    for data in glob_json(zipfile, "*/likes/liked_posts.json"):
         for item in data["likes_media_likes"]:
             info = item["string_list_data"][0]
             timestamps.append(parse_datetime(info["timestamp"]))
@@ -437,7 +439,7 @@ def get_media_creation_timestamps(items):
 
 
 def get_content_posts_timestamps(zipfile):
-    for data in glob_json(zipfile, "content/posts_*.json"):
+    for data in glob_json(zipfile, "*/content/posts_*.json"):
         yield from get_media_creation_timestamps(data)
 
 
@@ -456,7 +458,7 @@ def df_from_timestamps(timestamps, column):
 
 
 def stories_timestamps(zipfile):
-    for data in glob_json(zipfile, "content/stories.json"):
+    for data in glob_json(zipfile, "*/content/stories.json"):
         for item in data["ig_stories"]:
             yield parse_datetime(item["creation_timestamp"])
 
@@ -489,8 +491,8 @@ def df_from_timestamp_columns(a, b):
 def get_video_posts_timestamps(zipfile):
     return itertools.chain(
         get_content_posts_timestamps(zipfile),
-        get_media_timestamps(zipfile, "content/igtv_videos.json", "ig_igtv_media"),
-        get_media_timestamps(zipfile, "content/reels.json", "ig_reels_media"),
+        get_media_timestamps(zipfile, "*/content/igtv_videos.json", "ig_igtv_media"),
+        get_media_timestamps(zipfile, "*/content/reels.json", "ig_reels_media"),
     )
 
 
@@ -563,7 +565,7 @@ def extract_video_posts(zipfile):
 
 def get_post_comments_timestamps(zipfile):
     return get_string_map_timestamps(
-        zipfile, "comments/post_comments.json", "comments_media_comments"
+        zipfile, "*/comments/post_comments.json", "comments_media_comments"
     )
 
 
@@ -582,10 +584,10 @@ def get_string_map_timestamps(zipfile, pattern, key):
 def get_likes_timestamps(zipfile):
     return itertools.chain(
         get_string_list_timestamps(
-            zipfile, "likes/liked_comments.json", "likes_comment_likes"
+            zipfile, "*/likes/liked_comments.json", "likes_comment_likes"
         ),
         get_string_list_timestamps(
-            zipfile, "likes/liked_posts.json", "likes_media_likes"
+            zipfile, "*/likes/liked_posts.json", "likes_media_likes"
         ),
     )
 
@@ -664,7 +666,7 @@ def extract_viewed(zipfile):
         (
             get_string_map_timestamps(
                 zipfile,
-                "ads_and_topics/videos_watched.json",
+                "*/ads_and_topics/videos_watched.json",
                 "impressions_history_videos_watched",
             ),
             "Videos",
@@ -672,7 +674,7 @@ def extract_viewed(zipfile):
         (
             get_string_map_timestamps(
                 zipfile,
-                "ads_and_topics/posts_viewed.json",
+                "*/ads_and_topics/posts_viewed.json",
                 "impressions_history_posts_seen",
             ),
             "Posts",

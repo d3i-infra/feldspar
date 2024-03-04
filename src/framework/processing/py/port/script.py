@@ -171,7 +171,7 @@ def map_to_timeslot(series):
     return series.map(lambda hour: f"{hour}-{hour+1}")
 
 
-def count_items(zipfile, pattern, key):
+def count_items(zipfile, pattern, key=None):
     count = 0
     for data in glob_json(zipfile, pattern):
         # Some files have dictionary, others a list of dictionaries. Normalize
@@ -179,7 +179,10 @@ def count_items(zipfile, pattern, key):
         if isinstance(data, dict):
             data = [data]
         for item in data:
-            count += len(item[key])
+            if key is None:
+                count += len(item)
+            else:
+                count += len(item[key])
     return count
 
 
@@ -228,9 +231,7 @@ def extract_summary_data(zipfile):
                 "relationships_following",
             ),
             count_posts(zipfile),
-            count_items(
-                zipfile, "*/comments/post_comments.json", "comments_media_comments"
-            ),
+            count_items(zipfile, "*/comments/post_comments_*.json"),
             count_items(
                 zipfile,
                 "*/ads_and_topics/videos_watched.json",
@@ -334,8 +335,8 @@ def extract_direct_message_activity(zipfile):
 ## REMOVED ON REQUEST BY CAMBRIDGE (see notion)
 def extract_comment_activity(zipfile):
     timestamps = []
-    for data in glob_json(zipfile, "*/comments/post_comments.json"):
-        for item in data["comments_media_comments"]:
+    for data in glob_json(zipfile, "*/comments/post_comments_*.json"):
+        for item in data:
             timestamps.append(
                 parse_datetime(item["string_map_data"]["Time"]["timestamp"])
             )
@@ -564,21 +565,23 @@ def extract_video_posts(zipfile):
 
 
 def get_post_comments_timestamps(zipfile):
-    return get_string_map_timestamps(
-        zipfile, "*/comments/post_comments.json", "comments_media_comments"
-    )
+    return get_string_map_timestamps(zipfile, "*/comments/post_comments_*.json")
 
 
-def get_string_list_timestamps(zipfile, pattern, key):
+def get_string_map_timestamps(zipfile, pattern, key=None):
     for data in glob_json(zipfile, pattern):
-        for item in data[key]:
-            yield parse_datetime(item["string_list_data"][0]["timestamp"])
-
-
-def get_string_map_timestamps(zipfile, pattern, key):
-    for data in glob_json(zipfile, pattern):
-        for item in data[key]:
+        if key is not None:
+            data = data[key]
+        for item in data:
             yield parse_datetime(item["string_map_data"]["Time"]["timestamp"])
+
+
+def get_string_list_timestamps(zipfile, pattern, key=None):
+    for data in glob_json(zipfile, pattern):
+        if key is not None:
+            data = data[key]
+        for item in data:
+            yield parse_datetime(item["string_list_data"][0]["timestamp"])
 
 
 def get_likes_timestamps(zipfile):

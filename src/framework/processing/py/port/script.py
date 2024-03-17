@@ -250,7 +250,7 @@ def extract_videos_viewed(data):
 
     df = pd.DataFrame(videos, columns=["Date", "Link"])
     date = df["Date"].map(parse_datetime)
-    df["Timeslot"] = map_to_timeslot(date.dt.hour)
+    df["Timeslot"] = pd.Series() if date.empty else map_to_timeslot(date.dt.hour)
     df = df.reindex(columns=["Date", "Timeslot", "Link"])
 
     description = props.Translatable(

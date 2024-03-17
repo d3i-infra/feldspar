@@ -13,8 +13,7 @@ from contextlib import suppress
 # TikTok file processing #
 ##########################
 
-filter_start = datetime.datetime(2021, 1, 1)
-filter_end = datetime.datetime(2025, 1, 1)
+filter_start = datetime.datetime.now() - datetime.timedelta(weeks=4 * 6)
 
 datetime_format = "%Y-%m-%d %H:%M:%S"
 
@@ -70,7 +69,7 @@ def get_comment_list_data(data):
 def get_date_filtered_items(items):
     for item in items:
         timestamp = parse_datetime(item["Date"])
-        if timestamp < filter_start or timestamp > filter_end:
+        if timestamp < filter_start:
             continue
         yield (timestamp, item)
 
@@ -300,8 +299,12 @@ def extract_video_posts(data):
         hourly_stats["Likes received"] += int(video["Likes"])
 
     df = pd.DataFrame(post_stats).transpose()
-    df["Date"] = df.index.strftime("%Y-%m-%d")
-    df["Timeslot"] = map_to_timeslot(df.index.hour)
+    if df.empty:
+        df["Date"] = pd.Series()
+        df["Timselot"] = pd.Series()
+    else:
+        df["Date"] = df.index.strftime("%Y-%m-%d")
+        df["Timeslot"] = map_to_timeslot(df.index.hour)
     df = df.reset_index(drop=True)
     df = df.reindex(columns=["Date", "Timeslot", "Videos", "Likes received"])
 
@@ -405,8 +408,12 @@ def extract_session_info(data):
 
     sessions = get_sessions(dates)
     df = pd.DataFrame(sessions, columns=["Start", "End", "Duration"])
-    df["Start"] = df["Start"].dt.strftime("%Y-%m-%d %H:%M")
-    df["Duration (in minutes)"] = (df["Duration"].dt.total_seconds() / 60).round(2)
+    if df.empty:
+        df["Start"] = pd.Series()
+        df["Duration (in minutes)"] = pd.Series()
+    else:
+        df["Start"] = df["Start"].dt.strftime("%Y-%m-%d %H:%M")
+        df["Duration (in minutes)"] = (df["Duration"].dt.total_seconds() / 60).round(2)
     df = df.drop("End", axis=1)
     df = df.drop("Duration", axis=1)
 

@@ -15,8 +15,7 @@ from contextlib import suppress
 # Instagram file processing #
 ##########################
 
-filter_start = datetime.datetime(1990, 1, 1)
-filter_end = datetime.datetime(2025, 1, 1)
+filter_start = datetime.datetime.now() - datetime.timedelta(weeks=4 * 6)
 
 datetime_format = "%Y-%m-%d %H:%M:%S"
 
@@ -73,7 +72,7 @@ def get_comment_list_data(data):
 
 def filter_timestamps(timestamps):
     for timestamp in timestamps:
-        if timestamp < filter_start or timestamp > filter_end:
+        if timestamp < filter_start or timestamp:
             continue
         yield timestamp
 

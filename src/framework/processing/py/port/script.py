@@ -922,7 +922,7 @@ class DataDonationProcessor:
 
         if consent_result.__type__ == "PayloadJSON":
             self.log(f"donate consent data")
-            yield donate(f"{self.sessionId}-{self.platform}", consent_result.value)
+            yield donate(f"{self.session_id}-{self.platform}", consent_result.value)
 
 
 class DataDonation:

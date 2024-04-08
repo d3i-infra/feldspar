@@ -860,6 +860,7 @@ class DataDonationProcessor:
                             return
                     self.log(f"extraction successful, go to consent form")
                     yield from self.prompt_consent(extraction_result)
+                    return
 
     def prompt_retry(self):
         retry_result = yield render_donation_page(

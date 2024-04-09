@@ -151,6 +151,11 @@ def get_json_data_from_file(file_):
         return get_json_data_from_zip(file_)
 
 
+def count_items(data, *key_path):
+    items = get_list(data, *key_path)
+    return len(items)
+
+
 def filtered_count(data, *key_path):
     items = get_list(data, *key_path)
     filtered_items = get_date_filtered_items(items)
@@ -188,17 +193,15 @@ def extract_summary_data(data):
     user_name = get_user_name(data)
     chat_history = get_chat_history(data)
     flattened = flatten_chat_history(chat_history)
-    direct_messages_in_period = list(get_date_filtered_items(flattened))
+    direct_messages = list(flattened)
     sent_count = len(
-        list(
-            filter(lambda item: item[1]["From"] == user_name, direct_messages_in_period)
-        )
+        list(filter(lambda item: item["From"] == user_name, direct_messages))
     )
     received_count = len(
         list(
             filter(
-                lambda item: item[1]["From"] != user_name,
-                direct_messages_in_period,
+                lambda item: item["From"] != user_name,
+                direct_messages,
             )
         )
     )
@@ -216,8 +219,8 @@ def extract_summary_data(data):
             "Videos watched",
         ],
         "Number": [
-            filtered_count(data, "Activity", "Follower List", "FansList"),
-            filtered_count(data, "Activity", "Following List", "Following"),
+            count_items(data, "Activity", "Follower List", "FansList"),
+            count_items(data, "Activity", "Following List", "Following"),
             cast_number(
                 data,
                 "Profile",
@@ -225,12 +228,12 @@ def extract_summary_data(data):
                 "ProfileMap",
                 "likesReceived",
             ),
-            filtered_count(data, "Video", "Videos", "VideoList"),
-            filtered_count(data, "Activity", "Like List", "ItemFavoriteList"),
-            filtered_count(data, "Comment", "Comments", "CommentsList"),
+            count_items(data, "Video", "Videos", "VideoList"),
+            count_items(data, "Activity", "Like List", "ItemFavoriteList"),
+            count_items(data, "Comment", "Comments", "CommentsList"),
             sent_count,
             received_count,
-            filtered_count(data, "Activity", "Video Browsing History", "VideoList"),
+            count_items(data, "Activity", "Video Browsing History", "VideoList"),
         ],
     }
 

@@ -251,6 +251,12 @@ def extract_summary_data(zipfile):
         ],
     }
 
+    description = props.Translatable(
+        {
+            "en": "This table contains summary information from your downloaded data. This might not match exactly with the numbers shown in your Instagram account.",
+        }
+    )
+    
     visualizations = []
 
     return ExtractionResult(
@@ -281,15 +287,15 @@ def extract_direct_message_activity(zipfile):
 
     description = props.Translatable(
         {
-            "en": "This table shows the times of the messages sent or received by you. The message content is not included, and names have been anonymized.",
+            "en": "This table shows the times of the messages sent or received by you in the past 6 months. The message content is not included and names have been anonymized.",
         }
     )
 
     visualizations = [
         dict(
             title={
-                "en": "Direct message activity over time",
-                "nl": "Direct message activiteit in de loop van de tijd",
+                "en": "Direct message activity over time within the past 6 months.",
+                "nl": "Direct message activiteit in de loop van de tijd.",
             },
             type="area",
             group=dict(column="Sent", dateFormat="auto"),
@@ -304,7 +310,7 @@ def extract_direct_message_activity(zipfile):
         ),
         dict(
             title={
-                "en": "Direct message activity per hour of the day",
+                "en": "Direct message activity per hour of the day during the past 6 months.",
                 "nl": "Direct message activiteit per uur van de dag",
             },
             type="bar",
@@ -384,7 +390,7 @@ def extract_posts_liked(zipfile):
     visualizations = [
         dict(
             title={
-                "en": "Posts liked per day of the week",
+                "en": "Posts liked per day of the week in the past 6 months.",
                 "nl": "Posts geliked per dag van de week",
             },
             type="bar",
@@ -400,7 +406,7 @@ def extract_posts_liked(zipfile):
         ),
         dict(
             title={
-                "en": "Posts liked per hour of the day",
+                "en": "Posts liked per hour of the day in the past 6 months.",
                 "nl": "Posts geliked per uur van de dag",
             },
             type="bar",
@@ -504,14 +510,14 @@ def extract_video_posts(zipfile):
 
     description = props.Translatable(
         {
-            "en": "This table shows how many times you have posted content in either your feed or your story. For anonymization purposes, the exact time of the post is not shown, but grouped by the hour.",
+            "en": "This table shows how many times you have posted content in either your feed or your story in the past 6 months. For anonymization purposes, the exact time of the post is not shown, but grouped by the hour.",
         }
     )
 
     visualizations = [
         dict(
             title={
-                "en": "Videos and stories over time",
+                "en": "Videos and stories over time during the past 6 months.",
                 "nl": "Video's en stories in de loop van de tijd",
             },
             type="line",
@@ -533,7 +539,7 @@ def extract_video_posts(zipfile):
         ),
         dict(
             title={
-                "en": "Videos and stories per hour of the day",
+                "en": "Videos and stories per hour of the day during the past 6 months.",
                 "nl": "Video's en stories per uur van de dag",
             },
             type="bar",
@@ -603,14 +609,14 @@ def extract_comments_and_likes(zipfile):
 
     description = props.Translatable(
         {
-            "en": "This table shows how many times you have liked or commented content on Instagram.",
+            "en": "This table shows how many times you have liked or commented content on Instagram during the past 6 months.",
         }
     )
 
     visualizations = [
         dict(
             title={
-                "en": "Comments and likes per month",
+                "en": "Comments and likes per month during the past 6 months.",
                 "nl": "Comments en likes per maand",
             },
             type="line",
@@ -632,7 +638,7 @@ def extract_comments_and_likes(zipfile):
         ),
         dict(
             title={
-                "en": "Comments and likes per hour of the day",
+                "en": "Comments and likes per hour of the day during the past 6 months.",
                 "nl": "Comments en likes per uur van de dag",
             },
             type="bar",
@@ -685,14 +691,14 @@ def extract_viewed(zipfile):
 
     description = props.Translatable(
         {
-            "en": "This table shows the number of videos and posts that you viewed over time.",
+            "en": "This table shows the number of videos and posts that you viewed over time during the past 6 months.",
         }
     )
 
     visualizations = [
         dict(
             title={
-                "en": "Number of videos and posts viewed over time",
+                "en": "Number of videos and posts viewed over time during the past 6 months.",
                 "nl": "Aantal video's en posts bekeken in de loop van de tijd",
             },
             type="line",
@@ -714,7 +720,7 @@ def extract_viewed(zipfile):
         ),
         dict(
             title={
-                "en": "Videos and posts viewed per hour of the day",
+                "en": "Videos and posts viewed per hour of the day during the past 6 months.",
                 "nl": "Video's en posts bekeken per uur van de dag",
             },
             type="bar",
@@ -765,14 +771,14 @@ def extract_session_info(zipfile):
 
     description = props.Translatable(
         {
-            "en": "This table shows the number of minutes you spent on Instagram over time.",
+            "en": "This table shows the number of minutes you spent on Instagram over time during the past 6 months.",
         }
     )
 
     visualizations = [
         dict(
             title={
-                "en": "Number of minutes spent on Instagram over time",
+                "en": "Number of minutes spent on Instagram over time during the past 6 months.",
                 "nl": "Aantal minuten besteed aan Instagram in de loop van de tijd",
             },
             type="area",
@@ -910,7 +916,7 @@ class DataDonationProcessor:
         description = props.Translatable(
             {
                 "en": """Decide whether you would like to donate the data below. Carefully check the data and adjust as required. Your donation will contibute to the reasearch project that was explained at the start of the project. Thank you in advance.
-                    If you DO NOT want to donate any of the information in the table below, you can select the row and delete it from your data donation in the table below""",
+                    If you DO NOT want to donate information from some of the tables below, you can select a table row and delete it or click the checkbox on the left table top to select all information in the table and click 'Delete'.""",
             }
         )
 

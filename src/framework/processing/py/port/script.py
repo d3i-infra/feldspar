@@ -237,13 +237,19 @@ def extract_summary_data(data):
         ],
     }
 
+    description = props.Translatable(
+        {
+            "en": "This table contains summary information from your downloaded data. This might not match exactly with the numbers shown in your TikTok account.",
+        }
+    )
+    
     return ExtractionResult(
         "tiktok_summary",
         props.Translatable(
             {"en": "Summary information", "nl": "Samenvatting gegevens"}
         ),
         pd.DataFrame(summary_data),
-        None,
+        description,
         None,
     )
 
@@ -258,14 +264,14 @@ def extract_videos_viewed(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the videos you watched on TikTok",
+            "en": "This table contains the videos you watched on TikTok in the past 6 months.",
         }
     )
 
     visualizations = [
         dict(
             title={
-                "en": "The percentage of videos viewed within each hour from your daily total",
+                "en": "The percentage of videos viewed within each hour from your daily total during the past 6 months.",
                 "nl": "Het percentage van bekeken video's binnen elk uur van je dagelijkse totaal",
             },
             type="bar",
@@ -313,7 +319,7 @@ def extract_video_posts(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the number of videos you yourself posted and the number of likes you received. For anonymization, videos are grouped by the hour they were posted and the exact time removed",
+            "en": "This table contains the number of videos you yourself posted and the number of likes you received in the past 6 months. For anonymization, videos are grouped by the hour they were posted and the exact time removed",
         }
     )
 
@@ -361,14 +367,14 @@ def extract_comments_and_likes(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the number of likes you gave and comments you made.",
+            "en": "This table contains the number of likes you gave and comments you made in the past 6 months.",
         }
     )
 
     visualizations = [
         dict(
             title={
-                "en": "The average number of likes and comments you gave within each hour of the day",
+                "en": "The average number of likes and comments you gave within each hour of the day during the past 6 months.",
                 "nl": "The gemiddelde aantal likes en comments dat je gaf binnen elk uur van de dag",
             },
             type="bar",
@@ -422,7 +428,7 @@ def extract_session_info(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the start date and duration of your TikTok sessions",
+            "en": "This table contains the start date and duration of your TikTok sessions in the past 6 months.",
         }
     )
 
@@ -444,7 +450,7 @@ def extract_session_info(data):
         ),
         dict(
             title={
-                "en": "Average time spent on TikTok per day of the week",
+                "en": "Average time spent on TikTok per day of the week during the past 6 months.",
             },
             type="bar",
             group=dict(
@@ -461,7 +467,7 @@ def extract_session_info(data):
         ),
         dict(
             title={
-                "en": "Average time spent on TikTok per hour of the day",
+                "en": "Average time spent on TikTok per hour of the day during the past 6 months.",
             },
             type="bar",
             group=dict(
@@ -500,7 +506,7 @@ def extract_direct_messages(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the times at which you sent or received direct messages. The content of the messages is not included, and user names are replaced with anonymous IDs.",
+            "en": "This table contains the times at which you sent or received direct messages in the past 6 months. The content of the messages is not included, and user names are replaced with anonymous IDs.",
         }
     )
 
@@ -672,7 +678,7 @@ class DataDonationProcessor:
         description = props.Translatable(
             {
                 "en": """Decide whether you would like to donate the data below. Carefully check the data and adjust as required. Your donation will contibute to the reasearch project that was explained at the start of the project. Thank you in advance.
-                    If you DO NOT want to donate any of the information in the table below, you can select the row and delete it from your data donation in the table below""",
+                    If you DO NOT want to donate information from some of the tables below, you can select a table row and delete it or click the checkbox on the left table top to select all information in the table and click 'Delete'.""",
             }
         )
         consent_result = yield render_donation_page(

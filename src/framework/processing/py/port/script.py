@@ -264,14 +264,14 @@ def extract_videos_viewed(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the videos you watched on TikTok in the past 6 months.",
+            "en": "This table contains the videos you watched on TikTok.",
         }
     )
 
     visualizations = [
         dict(
             title={
-                "en": "The percentage of videos viewed within each hour from your daily total during the past 6 months.",
+                "en": "The percentage of videos viewed within each hour from your daily total.",
                 "nl": "Het percentage van bekeken video's binnen elk uur van je dagelijkse totaal",
             },
             type="bar",
@@ -319,7 +319,7 @@ def extract_video_posts(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the number of videos you yourself posted and the number of likes you received in the past 6 months. For anonymization, videos are grouped by the hour they were posted and the exact time removed",
+            "en": "This table contains the number of videos you yourself posted and the number of likes you received. For anonymization purposes, videos are grouped by the hour in which they were posted and the exact time is removed.",
         }
     )
 
@@ -367,14 +367,14 @@ def extract_comments_and_likes(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the number of likes you gave and comments you made in the past 6 months.",
+            "en": "This table contains the number of likes you gave and comments you made.",
         }
     )
 
     visualizations = [
         dict(
             title={
-                "en": "The average number of likes and comments you gave within each hour of the day during the past 6 months.",
+                "en": "The average number of likes and comments you gave within each hour of the day.",
                 "nl": "The gemiddelde aantal likes en comments dat je gaf binnen elk uur van de dag",
             },
             type="bar",
@@ -428,7 +428,7 @@ def extract_session_info(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the start date and duration of your TikTok sessions in the past 6 months.",
+            "en": "This table contains the start date and duration of your TikTok sessions.",
         }
     )
 
@@ -450,7 +450,7 @@ def extract_session_info(data):
         ),
         dict(
             title={
-                "en": "Average time spent on TikTok per day of the week during the past 6 months.",
+                "en": "Average time spent on TikTok per day of the week.",
             },
             type="bar",
             group=dict(
@@ -467,7 +467,7 @@ def extract_session_info(data):
         ),
         dict(
             title={
-                "en": "Average time spent on TikTok per hour of the day during the past 6 months.",
+                "en": "Average time spent on TikTok per hour of the day.",
             },
             type="bar",
             group=dict(
@@ -506,7 +506,7 @@ def extract_direct_messages(data):
 
     description = props.Translatable(
         {
-            "en": "This table contains the times at which you sent or received direct messages in the past 6 months. The content of the messages is not included, and user names are replaced with anonymous IDs.",
+            "en": "This table contains the times at which you sent or received direct messages. The content of the messages is not included, and user names are replaced with anonymous IDs.",
         }
     )
 

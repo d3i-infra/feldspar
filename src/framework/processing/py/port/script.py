@@ -265,7 +265,7 @@ def extract_summary_data(zipfile):
             {"en": "Summary information", "nl": "Samenvatting gegevens"}
         ),
         pd.DataFrame(summary_data),
-        None,
+        description,
         visualizations,
     )
 
